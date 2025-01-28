@@ -13,7 +13,7 @@ PINK = (255,192,203)
 # size window, background and pictures
 window = pygame.display.set_mode((800, 600))
 
-background = pygame.image.load("pictures/backgroundwood.jpg").convert()
+background = pygame.image.load("pictures/background.png").convert()
 ninja = pygame.image.load("pictures/ninja.png").convert_alpha()
 
 
