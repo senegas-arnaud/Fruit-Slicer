@@ -53,7 +53,8 @@ bomb = pygame.image.load("pictures/fruits/bomb.png")
 # lives = pygame.image.load("/pictures/fruits/redcross.png")
 
 
-fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon, ice, bomb]
+fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon]
+bonus = [ice, bomb]
 clock = pygame.time.Clock()
 FPS = 20
 GRAVITY  = 2
@@ -64,8 +65,8 @@ letter = random.choice(alphabet)
 
 class Objet:
     def __init__(self):
-        self.x = random.randint(150,1000)
-        self.y = 700
+        self.x = random.randint(100,600)
+        self.y = 600
         self.vitesse_x = random.randint(-15,15)
         self.vitesse_y = random.randint(-50, -35) 
         self.image = random.choice(fruits)
@@ -78,8 +79,27 @@ class Objet:
     def display(self, screen):
         screen.blit(self.image, (self.x, self.y))
 
+class Objet_bis:
+    def __init__(self):
+        self.x = random.randint(100,600)
+        self.y = 600
+        self.vitesse_x = random.randint(-15,15)
+        self.vitesse_y = random.randint(-50, -35) 
+        self.image = random.choice(bonus)
+    
+    def update(self):
+        self.vitesse_y += GRAVITY 
+        self.x += self.vitesse_x
+        self.y += self.vitesse_y
+
+    def display(self, screen):
+        screen.blit(self.image, (self.x, self.y))
+
 def spawn_new_fruits():
     objets.append(Objet())
+
+def spawn_bonus():
+    objets.append(Objet_bis())
 
 
 objets = [Objet()]
@@ -104,20 +124,30 @@ def main_game():
             objet.update()
             objet.display(screen)
 
-        if objet.y > 750 or objet.y<0 or objet.x<0 or objet.x>1250:
+        if objet.y > 600 or objet.y<0 or objet.x<0 or objet.x>850:
                 objets.remove(objet)
-                if random.random() < 0.25:
-                    spawn_new_fruits()  
-                    spawn_new_fruits() 
-                    spawn_new_fruits() 
-                if random.random()< 0.05:
-                    spawn_new_fruits() 
-                    spawn_new_fruits() 
-                    spawn_new_fruits() 
-                    spawn_new_fruits() 
-                else:
-                    spawn_new_fruits() 
-                    spawn_new_fruits() 
+                spawn_count = random.choices([1, 2, 3, 4, 5, 6], weights=[45, 25, 10, 5, 5, 10])[0]
+                match spawn_count:
+                    case 1:
+                        spawn_new_fruits()
+                    case 2:
+                        spawn_new_fruits()
+                        spawn_new_fruits()
+                    case 3:
+                        spawn_new_fruits()
+                        spawn_new_fruits()
+                        spawn_new_fruits()
+                    case 4:
+                        spawn_new_fruits() or spawn_bonus()
+                        spawn_new_fruits()
+                        spawn_new_fruits()
+                        spawn_new_fruits()
+                    case 5:
+                        spawn_bonus()
+                    case 6:
+                        spawn_bonus()
+                        spawn_new_fruits()
+                        spawn_new_fruits()
 
         pygame.display.update()
         clock.tick(FPS)
