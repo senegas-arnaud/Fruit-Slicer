@@ -14,7 +14,7 @@ screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Fruits Ninja") 
 
 
-background = pygame.image.load("pictures/backgroundwood.jpg").convert()
+background = pygame.image.load("pictures/background.png").convert()
 ninja = pygame.image.load("pictures/ninja.png").convert_alpha()
 
 
@@ -41,16 +41,19 @@ def menu():
     text("4. EXIT THE GAME (are you sure ?)", text_font_bold, (WHITE), 420, 400)
     text("ENTER YOUR CHOICE", text_font, (WHITE), 460, 450)
 
-banana = pygame.image.load("/pictures/banana.png")
-orange = pygame.image.load("/pictures/orange.png")
-apple = pygame.image.load("/pictures/apple.png")
-ice = pygame.image.load("/pictures/ice.png")
-bomb = pygame.image.load("/pictures/bomb.png")
-strawberry = pygame.image.load("/pictures/strawberry.png")
-lives = pygame.image.load("/pictures/redcross.png")
+apple = pygame.image.load("pictures/fruits/apple.png")
+banana = pygame.image.load("pictures/fruits/banana.png")
+kiwi = pygame.image.load("pictures/fruits/kiwi.png")
+lime = pygame.image.load("pictures/fruits/lime.png")
+orange = pygame.image.load("pictures/fruits/orange.png")
+strawberry = pygame.image.load("pictures/fruits/strawberry.png")
+watermelon = pygame.image.load("pictures/fruits/watermelon.png")
+ice = pygame.image.load("pictures/fruits/ice.png")
+bomb = pygame.image.load("pictures/fruits/bomb.png")
+# lives = pygame.image.load("/pictures/fruits/redcross.png")
 
 
-fruits = [banana, orange, apple, ice, bomb, strawberry]
+fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon, ice, bomb]
 clock = pygame.time.Clock()
 FPS = 20
 GRAVITY  = 2
@@ -93,9 +96,9 @@ def main_game():
                     return "menu"
 
         screen.blit(background, (0, 0)) 
-        screen.blit(lives,(1050,20))
-        screen.blit(lives,(1110,20))
-        screen.blit(lives,(1170,20))
+        # screen.blit(lives,(1050,20))
+        # screen.blit(lives,(1110,20))
+        # screen.blit(lives,(1170,20))
 
         for objet in objets[:]:
             objet.update()
@@ -118,8 +121,6 @@ def main_game():
 
         pygame.display.update()
         clock.tick(FPS)
-
-main_game()
 
 
 game_state = "menu"
