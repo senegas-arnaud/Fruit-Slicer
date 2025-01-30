@@ -111,11 +111,12 @@ def menu():
     screen.blit(ninja,(0,200))
     text("Welcome to", second_title_font, (WHITE), 425, 50)
     text("FRUIT SLICER", title_font, (WHITE), 300, 100)
-    text("1. GAME RULES", text_font_bold, (WHITE), 420, 250)
-    text("2. PLAY GAME", text_font_bold, (WHITE), 420, 300)
+    text("1. PLAY GAME", text_font_bold, (WHITE), 420, 250)
+    text("2. DIFFICULTY LEVEL", text_font_bold, (WHITE), 420, 300)
     text("3. SCORING TABLE", text_font_bold, (WHITE), 420, 350)
-    text("4. EXIT THE GAME (are you sure ?)", text_font_bold, (WHITE), 420, 400)
-    text("ENTER YOUR CHOICE", text_font, (WHITE), 460, 450)
+    text("4. GAME RULES", text_font_bold, (WHITE), 420, 400)
+    text("5. EXIT THE GAME (are you sure ?)", text_font_bold, (WHITE), 420, 450)
+    text("ENTER YOUR CHOICE", text_font, (WHITE), 460, 500)
 
 #Game-Over screen
 def game_over_screen():
@@ -225,10 +226,14 @@ while main_loop :
                     game_state= "menu"
             if game_state == "menu":
                 if event.key == K_1:
-                    game_state = "game_rules"
+                    game_state = "playing"
                 elif event.key == K_2:
-                    game_state = "playing"  
+                    game_state = "level" 
+                elif event.key == K_3:
+                    game_state = "score"
                 elif event.key == K_4:
+                    game_state = "game_rules" 
+                elif event.key == K_5:
                     main_loop = False  
             elif game_state == "game_over":
                 if event.key == K_1:
