@@ -1,12 +1,15 @@
 import pygame
 from pygame.locals import *
+from sound import Sound
 import random
 
 pygame.init()
 
+
 #colors used
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+music = Sound()
 
 
 # size screen, background and pictures
@@ -126,7 +129,7 @@ def main_game():
 
         if objet.y > 600 or objet.y<0 or objet.x<0 or objet.x>850:
                 objets.remove(objet)
-                spawn_count = random.choices([1, 2, 3, 4, 5, 6], weights=[45, 25, 10, 5, 5, 10])[0]
+                spawn_count = random.choices([1, 2, 3, 4, 5, 6], weights=[45, 25, 10, 5, 5, 5])[0]
                 match spawn_count:
                     case 1:
                         spawn_new_fruits()
