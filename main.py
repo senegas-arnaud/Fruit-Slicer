@@ -7,6 +7,7 @@ pygame.init()
 #colors used
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+YELLOW = (255, 255, 0)
 
 
 # size screen, background and pictures
@@ -21,7 +22,7 @@ title_font = pygame.font.SysFont("Arial", 60, italic = True)
 second_title_font = pygame.font.SysFont("Arial", 30, italic = True)
 text_font = pygame.font.SysFont("Arial", 15)
 text_font_bold = pygame.font.SysFont("Arial", 16, bold = True)
-game_letter_font = pygame.font.SysFont("Arial", 25, bold = True)
+game_letter_font = pygame.font.SysFont("Arial", 35, bold = True)
 
 def text(text,font, text_color, x, y):
     img = font.render(text, True, text_color)
@@ -57,7 +58,7 @@ FPS = 20
 GRAVITY  = 2
 
 
-alphabet = ["a", "z", "e", "r", "t", "y", "u", "i", "o", "p", "q", "s", "d", "f", "g", "h", "j", "k", "l", "m", "w", "x", "c", "v", "b", "n"]
+alphabet = ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P", "Q", "S", "D", "F", "G", "H", "J", "K", "L", "M", "W", "X", "C", "V", "B", "N"]
 
 class Objet:
     def __init__(self):
@@ -68,7 +69,7 @@ class Objet:
         self.fruit = random.choice(fruits)
         self.letter = random.choice(alphabet)
         self.fruit_rect = self.fruit.get_rect()
-        self.letter_surface = game_letter_font.render(self.letter, True, BLACK)
+        self.letter_surface = game_letter_font.render(self.letter, True, YELLOW)
         self.letter_rect = self.letter_surface.get_rect()
         self.width = max(self.fruit_rect.width, self.letter_rect.width)
         self.height = self.fruit_rect.height + self.letter_rect.height
@@ -78,10 +79,12 @@ class Objet:
         self.vitesse_y += GRAVITY 
         self.x += self.vitesse_x
         self.y += self.vitesse_y
+        self.rect.x = self.x
+        self.rect.y = self.y
 
     def display(self, screen):
-        screen.blit(self.fruit_rect, (self.x, self.y))
-        screen.blit(self.letter_rect, (self.x, self.y))
+        screen.blit(self.fruit, (self.rect.x, self.rect.y + self.letter_rect.height))
+        screen.blit(self.letter_surface, (self.rect.x + (self.width - self.letter_rect.width) // 2, self.rect.y))
         # pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)
 
 
@@ -108,24 +111,22 @@ def main_game():
         # screen.blit(lives,(1170,20))
 
         for objet in objets[:]:
-            objet.update()
-            objet.display(screen)
-
-        if objet.y > 750 or objet.y<0 or objet.x<0 or objet.x>1250:
-                objets.remove(objet)
-                if random.random() < 0.25:
-                    spawn_new_fruits()  
-                    spawn_new_fruits() 
-                    spawn_new_fruits() 
-                if random.random()< 0.05:
-                    spawn_new_fruits() 
-                    spawn_new_fruits() 
-                    spawn_new_fruits() 
-                    spawn_new_fruits() 
-                else:
-                    spawn_new_fruits() 
-                    spawn_new_fruits() 
-
+            if objet.y > 750 or objet.y<0 or objet.x<0 or objet.x>1250:
+                    objets.remove(objet)
+                    if random.random() < 0.25:
+                        spawn_new_fruits()  
+                        spawn_new_fruits() 
+                        spawn_new_fruits() 
+                    if random.random()< 0.05:
+                        spawn_new_fruits() 
+                        spawn_new_fruits() 
+                        spawn_new_fruits() 
+                        spawn_new_fruits() 
+                    else:
+                        spawn_new_fruits() 
+                        spawn_new_fruits() 
+        objet.update()
+        objet.display(screen)
         pygame.display.update()
         clock.tick(FPS)
 
