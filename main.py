@@ -123,9 +123,9 @@ def game_over_screen():
     screen.blit(lives, (1050, 20))
     screen.blit(lives, (1110, 20))
     screen.blit(lives, (1170, 20))
-    text(f"GAME OVER !", text_font, WHITE, 535, 375)
-    text(f"1. Play again?", text_font, WHITE, 75, 300)
-    text(f"2. Back to menu?", text_font, WHITE, 75,500 )
+    text("GAME OVER !", title_font, WHITE, 235, 375)
+    text("1. Play again?", second_title_font, WHITE, 75, 300)
+    text("2. Back to menu?", second_title_font, WHITE, 75,500 )
 
 def spawn_new_fruits():
     objets.append(Objet())
@@ -133,13 +133,9 @@ def spawn_new_fruits():
 def spawn_bonus():
     objets.append(Objet_bis())
 
-def reset_game():
-    global objets, life
-    objets = [Objet()] 
-    life = 3 
-
 def main_game():
-    reset_game()
+    objets.clear()
+    spawn_new_fruits()
     life = 3
     run = True
     while run:
@@ -159,7 +155,7 @@ def main_game():
             objet.update()
             objet.display(screen)
 
-            if objet.y > 600 or objet.y<0 or objet.x<0 or objet.x>850:
+            if objet.y > 600 or objet.y < 0 or objet.x < 0 or objet.x > 850:
                 objets.remove(objet)
                 spawn_count = random.choices([1, 2, 3, 4, 5, 6], weights=[45, 25, 10, 5, 5, 10])[0]
                 match spawn_count:
@@ -203,7 +199,7 @@ while main_loop :
     elif game_state == "playing":
         game_state = main_game()
     elif game_state == "game_over":
-        game_state = game_over_screen()
+        game_over_screen()
 
 
     for event in pygame.event.get():
@@ -214,12 +210,12 @@ while main_loop :
                 if event.key == K_1:
                     game_state = "playing"
                 elif event.key == K_4:
-                    main_loop = False
+                    main_loop = False  
             elif game_state == "game_over":
                 if event.key == K_1:
-                    game_state = "playing"
+                    game_state = "playing" 
                 elif event.key == K_2:
-                    game_state == "menu"    
+                    game_state = "menu"
 
 
     pygame.display.update()
