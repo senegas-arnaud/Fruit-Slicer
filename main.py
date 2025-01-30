@@ -12,18 +12,16 @@ BLACK = (0, 0, 0)
 # size screen, background and pictures
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Fruits Ninja") 
-
-
 background = pygame.image.load("pictures/background.png").convert()
 ninja = pygame.image.load("pictures/ninja.png").convert_alpha()
 
 
 #text formatting
-
 title_font = pygame.font.SysFont("Arial", 60, italic = True)
 second_title_font = pygame.font.SysFont("Arial", 30, italic = True)
 text_font = pygame.font.SysFont("Arial", 15)
 text_font_bold = pygame.font.SysFont("Arial", 16, bold = True)
+game_letter_font = pygame.font.SysFont("Arial", 25, bold = True)
 
 def text(text,font, text_color, x, y):
     img = font.render(text, True, text_color)
@@ -58,9 +56,8 @@ clock = pygame.time.Clock()
 FPS = 20
 GRAVITY  = 2
 
-alphabet = ["a", "z", "e", "r", "t", "y", "u", "i", "o", "p", "q", "s", "d", "f", "g", "h", "j", "k", "l", "m", "w", "x", "c", "v", "b", "n"]
-letter = random.choice(alphabet)
 
+alphabet = ["a", "z", "e", "r", "t", "y", "u", "i", "o", "p", "q", "s", "d", "f", "g", "h", "j", "k", "l", "m", "w", "x", "c", "v", "b", "n"]
 
 class Objet:
     def __init__(self):
@@ -68,7 +65,14 @@ class Objet:
         self.y = 700
         self.vitesse_x = random.randint(-15,15)
         self.vitesse_y = random.randint(-50, -35) 
-        self.image = random.choice(fruits)
+        self.fruit = random.choice(fruits)
+        self.letter = random.choice(alphabet)
+        self.fruit_rect = self.fruit.get_rect()
+        self.letter_surface = game_letter_font.render(self.letter, True, BLACK)
+        self.letter_rect = self.letter_surface.get_rect()
+        self.width = max(self.fruit_rect.width, self.letter_rect.width)
+        self.height = self.fruit_rect.height + self.letter_rect.height
+        self.rect = pygame.Rect(self.x, self.y,self.width, self.height)
     
     def update(self):
         self.vitesse_y += GRAVITY 
@@ -76,7 +80,10 @@ class Objet:
         self.y += self.vitesse_y
 
     def display(self, screen):
-        screen.blit(self.image, (self.x, self.y))
+        screen.blit(self.fruit_rect, (self.x, self.y))
+        screen.blit(self.letter_rect, (self.x, self.y))
+        # pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)
+
 
 def spawn_new_fruits():
     objets.append(Objet())
