@@ -1,3 +1,4 @@
+import os
 import pygame
 from pygame.locals import *
 import random
@@ -9,37 +10,13 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 YELLOW = (255, 255, 0)
 
-
 # size screen, background and pictures
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Fruits Ninja") 
 background = pygame.image.load("pictures/background.png").convert()
 ninja = pygame.image.load("pictures/ninja.png").convert_alpha()
 
-
-#text formatting
-title_font = pygame.font.SysFont("Arial", 60, italic = True)
-second_title_font = pygame.font.SysFont("Arial", 30, italic = True)
-text_font = pygame.font.SysFont("Arial", 15)
-text_font_bold = pygame.font.SysFont("Arial", 16, bold = True)
-game_letter_font = pygame.font.SysFont("Arial", 35, bold = True)
-
-def text(text,font, text_color, x, y):
-    img = font.render(text, True, text_color)
-    screen.blit(img, (x,y))
-
-#Menu function
-def menu():
-    screen.blit(background,(0,0))
-    screen.blit(ninja,(0,200))
-    text("Welcome to", second_title_font, (WHITE), 425, 50)
-    text("NINJA FRUITS", title_font, (WHITE), 300, 100)
-    text("1. PLAY GAME", text_font_bold, (WHITE), 420, 250)
-    text("2. CHANGE YOUR NAME", text_font_bold, (WHITE), 420, 300)
-    text("3. SCORING TABLE", text_font_bold, (WHITE), 420, 350)
-    text("4. EXIT THE GAME (are you sure ?)", text_font_bold, (WHITE), 420, 400)
-    text("ENTER YOUR CHOICE", text_font, (WHITE), 460, 450)
-
+#Load images
 apple = pygame.image.load("pictures/fruits/apple.png")
 banana = pygame.image.load("pictures/fruits/banana.png")
 kiwi = pygame.image.load("pictures/fruits/kiwi.png")
@@ -49,17 +26,27 @@ strawberry = pygame.image.load("pictures/fruits/strawberry.png")
 watermelon = pygame.image.load("pictures/fruits/watermelon.png")
 ice = pygame.image.load("pictures/fruits/ice.png")
 bomb = pygame.image.load("pictures/fruits/bomb.png")
-# lives = pygame.image.load("/pictures/fruits/redcross.png")
-
+lives = pygame.image.load("pictures/fruits/redcross.png")
+boom = pygame.image.load("pictures/fruits/boom.jpg")
 
 fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon]
 bonus = [ice, bomb]
+alphabet = ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P", "Q", "S", "D", "F", "G", "H", "J", "K", "L", "M", "W", "X", "C", "V", "B", "N"]
 clock = pygame.time.Clock()
 FPS = 20
 GRAVITY  = 2
 
+#text formatting
+title_font = pygame.font.SysFont("Arial", 60, italic = True)
+second_title_font = pygame.font.SysFont("Arial", 30, italic = True)
+text_font = pygame.font.SysFont("Arial", 15)
+text_font_bold = pygame.font.SysFont("Arial", 16, bold = True)
+game_letter_font = pygame.font.SysFont("Arial", 35, bold = True)
 
-alphabet = ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P", "Q", "S", "D", "F", "G", "H", "J", "K", "L", "M", "W", "X", "C", "V", "B", "N"]
+#Text function
+def text(text,font, text_color, x, y):
+    img = font.render(text, True, text_color)
+    screen.blit(img, (x,y))
 
 class Objet:
     def __init__(self):
@@ -117,7 +104,28 @@ class Objet_bis:
         # pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)
 
 
+#Menu function
+def menu():
+    screen.blit(background,(0,0))
+    screen.blit(ninja,(0,200))
+    text("Welcome to", second_title_font, (WHITE), 425, 50)
+    text("NINJA FRUITS", title_font, (WHITE), 300, 100)
+    text("1. PLAY GAME", text_font_bold, (WHITE), 420, 250)
+    text("2. CHANGE YOUR NAME", text_font_bold, (WHITE), 420, 300)
+    text("3. SCORING TABLE", text_font_bold, (WHITE), 420, 350)
+    text("4. EXIT THE GAME (are you sure ?)", text_font_bold, (WHITE), 420, 400)
+    text("ENTER YOUR CHOICE", text_font, (WHITE), 460, 450)
 
+#Game-Over screen
+def game_over_screen():
+    screen.blit(background, (0, 0)) 
+    screen.blit(boom, (250,-10))
+    screen.blit(lives, (1050, 20))
+    screen.blit(lives, (1110, 20))
+    screen.blit(lives, (1170, 20))
+    text(f"GAME OVER !", text_font, WHITE, 535, 375)
+    text(f"1. Play again?", text_font, WHITE, 75, 300)
+    text(f"2. Back to menu?", text_font, WHITE, 75,500 )
 
 def spawn_new_fruits():
     objets.append(Objet())
@@ -125,11 +133,14 @@ def spawn_new_fruits():
 def spawn_bonus():
     objets.append(Objet_bis())
 
-
-objets = [Objet()]
+def reset_game():
+    global objets, life
+    objets = [Objet()] 
+    life = 3 
 
 def main_game():
-    
+    reset_game()
+    life = 3
     run = True
     while run:
         for event in pygame.event.get():
@@ -140,15 +151,15 @@ def main_game():
                     return "menu"
 
         screen.blit(background, (0, 0)) 
-        # screen.blit(lives,(1050,20))
-        # screen.blit(lives,(1110,20))
-        # screen.blit(lives,(1170,20))
+       
+        for i in range(life):
+            screen.blit(lives, (600 + i * 60, 20))
 
         for objet in objets[:]:
             objet.update()
             objet.display(screen)
 
-        if objet.y > 600 or objet.y<0 or objet.x<0 or objet.x>850:
+            if objet.y > 600 or objet.y<0 or objet.x<0 or objet.x>850:
                 objets.remove(objet)
                 spawn_count = random.choices([1, 2, 3, 4, 5, 6], weights=[45, 25, 10, 5, 5, 10])[0]
                 match spawn_count:
@@ -172,11 +183,17 @@ def main_game():
                         spawn_bonus()
                         spawn_new_fruits()
                         spawn_new_fruits()
+            
+
+                if objets:
+                    life -= 1
+                    if life == 0:
+                        return "game_over"
 
         pygame.display.update()
         clock.tick(FPS)
 
-
+objets = [Objet()]
 game_state = "menu"
 main_loop = True
 
@@ -185,6 +202,8 @@ while main_loop :
         menu()
     elif game_state == "playing":
         game_state = main_game()
+    elif game_state == "game_over":
+        game_state = game_over_screen()
 
 
     for event in pygame.event.get():
@@ -196,6 +215,11 @@ while main_loop :
                     game_state = "playing"
                 elif event.key == K_4:
                     main_loop = False
+            elif game_state == "game_over":
+                if event.key == K_1:
+                    game_state = "playing"
+                elif event.key == K_2:
+                    game_state == "menu"    
 
 
     pygame.display.update()
