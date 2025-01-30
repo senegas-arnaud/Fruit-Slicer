@@ -27,7 +27,7 @@ watermelon = pygame.image.load("pictures/fruits/watermelon.png")
 ice = pygame.image.load("pictures/fruits/ice.png")
 bomb = pygame.image.load("pictures/fruits/bomb.png")
 lives = pygame.image.load("pictures/fruits/redcross.png")
-boom = pygame.image.load("pictures/fruits/boom.jpg")
+boom = pygame.image.load("pictures/fruits/boom.png")
 
 fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon]
 bonus = [ice, bomb]
