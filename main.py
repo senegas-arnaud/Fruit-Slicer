@@ -1,19 +1,18 @@
-import os
 import pygame
 from pygame.locals import *
-import random
 import json
+<<<<<<< HEAD
 import string
+=======
+from game import Game
+
+>>>>>>> 26a806a76f7d95ac3437d31a77c79eef1ffdc07f
 
 pygame.init()
 
-#colors used
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-YELLOW = (255, 255, 0)
-
-# size screen, background and pictures
+pygame.display.set_caption("Fruits Ninja") 
 screen = pygame.display.set_mode((800, 600))
+<<<<<<< HEAD
 pygame.display.set_caption("Fruit Slicer") 
 background = pygame.image.load("pictures/background.png").convert()
 ninja = pygame.image.load("pictures/ninja.png").convert_alpha()
@@ -37,21 +36,22 @@ bonus = [ice, bomb]
 clock = pygame.time.Clock()
 FPS = 20
 GRAVITY  = 2
+=======
+background = pygame.image.load("pictures/background.png")
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+>>>>>>> 26a806a76f7d95ac3437d31a77c79eef1ffdc07f
 
 #text formatting
 title_font = pygame.font.SysFont("Arial", 60, italic = True)
 second_title_font = pygame.font.SysFont("Arial", 30, italic = True)
-game_rule_font = pygame.font.SysFont("Arial", 20, italic = True)
 text_font = pygame.font.SysFont("Arial", 15)
 text_font_bold = pygame.font.SysFont("Arial", 16, bold = True)
 game_letter_font = pygame.font.SysFont("Arial", 35, bold = True)
 scoring_table_font = pygame.font.SysFont("Arial", 40, bold = True)
 
-#Text function
-def text(text,font, text_color, x, y):
-    img = font.render(text, True, text_color)
-    screen.blit(img, (x,y))
 
+<<<<<<< HEAD
 class Objet:
     def __init__(self):
         self.x = random.randint(100,600)
@@ -73,13 +73,18 @@ class Objet:
         self.y += self.vitesse_y
         self.rect.x = self.x
         self.rect.y = self.y
+=======
+ninja = pygame.image.load("pictures/ninja.png")
+banana = pygame.image.load("pictures/fruits/banana.png")
+boom = pygame.image.load("pictures/boom.png")
+lives = pygame.image.load("pictures/redcross.png")
+>>>>>>> 26a806a76f7d95ac3437d31a77c79eef1ffdc07f
 
-    def display(self, screen):
-        screen.blit(self.fruit, (self.rect.x, self.rect.y + self.letter_rect.height))
-        screen.blit(self.letter_surface, (self.rect.x + (self.width - self.letter_rect.width) // 2, self.rect.y))
-        # pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)
+clock = pygame.time.Clock()
+FPS = 0
 
 
+<<<<<<< HEAD
 class Objet_bis:
     def __init__(self):
         self.x = random.randint(100,600)
@@ -109,28 +114,55 @@ class Objet_bis:
 
 
 #Menu function
+=======
+>>>>>>> 26a806a76f7d95ac3437d31a77c79eef1ffdc07f
 def menu():
     screen.blit(background,(0,0))
     screen.blit(ninja,(0,200))
     text("Welcome to", second_title_font, (WHITE), 425, 50)
-    text("FRUIT SLICER", title_font, (WHITE), 300, 100)
+    text("NINJA FRUITS", title_font, (WHITE), 300, 100)
     text("1. PLAY GAME", text_font_bold, (WHITE), 420, 250)
-    text("2. DIFFICULTY LEVEL", text_font_bold, (WHITE), 420, 300)
+    text("2. CHANGE YOUR NAME", text_font_bold, (WHITE), 420, 300)
     text("3. SCORING TABLE", text_font_bold, (WHITE), 420, 350)
-    text("4. GAME RULES", text_font_bold, (WHITE), 420, 400)
-    text("5. EXIT THE GAME (are you sure ?)", text_font_bold, (WHITE), 420, 450)
-    text("ENTER YOUR CHOICE", text_font, (WHITE), 460, 500)
+    text("4. EXIT THE GAME (are you sure ?)", text_font_bold, (WHITE), 420, 400)
+    text("ENTER YOUR CHOICE", text_font, (WHITE), 460, 450)
 
-#Game-Over screen
+def level_choice():
+    screen.blit(background, (0, 0)) 
+    screen.blit(ninja,(0,200))
+    text("Choose you difficulty", second_title_font, (WHITE), 300, 200)
+    text("1. EASY", text_font_bold, (WHITE), 300, 250)
+    text("2. MEDIUM", text_font_bold, (WHITE), 300, 300)
+    text("3. HARD", text_font_bold, (WHITE), 300, 350)
+    pygame.display.update()
+
+    while True: 
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            if event.type == KEYDOWN:
+                if event.key == K_1:
+                    return 10 #FPS
+                elif event.key == K_2:
+                    return 15  #FPS
+                elif event.key == K_3:
+                    return 20 #FPS
+
+
 def game_over_screen():
     screen.blit(background, (0, 0)) 
     screen.blit(boom, (250,-10))
-    screen.blit(lives, (1050, 20))
-    screen.blit(lives, (1110, 20))
-    screen.blit(lives, (1170, 20))
-    text(f"GAME OVER !", text_font, WHITE, 535, 375)
-    text(f"1. Play again?", text_font, WHITE, 75, 300)
-    text(f"2. Back to menu?", text_font, WHITE, 75,500 )
+    text("GAME OVER !", title_font, WHITE, 235, 375)
+    text("1. Play again?", second_title_font, WHITE, 75, 300)
+    text("2. Back to menu?", second_title_font, WHITE, 75,500 )
+
+
+def text(texte, text_font, couleur, x, y):
+    texte_surface = text_font.render(texte, True, couleur)
+    screen.blit(texte_surface, (x, y))
+    
+
 
 def scoring_table():
 
@@ -155,16 +187,13 @@ def scoring_table():
         if coordonate <= 500:
                 player = str(player)
                 score = str(score)
-                text(player, scoring_table_font, (WHITE), 400, coordonate)
-                text(score, scoring_table_font, (WHITE), 550, coordonate)
+                text(player, scoring_table_font, (WHITE), 350, coordonate)
+                text(score, scoring_table_font, (WHITE), 600, coordonate)
                 coordonate += 55 
 
-def spawn_new_fruits():
-    objets.append(Objet())
 
-def spawn_bonus():
-    objets.append(Objet_bis())
 
+<<<<<<< HEAD
 def main_game():
 
     objets.clear()
@@ -241,8 +270,10 @@ def game_rules():
     text("ESC to return to menu",text_font,(WHITE),200, 560)
 
 def add_score():
+=======
+def add_score(game_score):
+>>>>>>> 26a806a76f7d95ac3437d31a77c79eef1ffdc07f
     player_input = ""
-    party_score = 200
     
     with open("score.json", "r") as f:
         data_json = json.load(f)
@@ -255,7 +286,7 @@ def add_score():
         screen.blit(boom, (250,-10))
 
         text("Score : ", text_font, WHITE, 75, 400)
-        text(str(party_score), text_font, WHITE, 125, 400)
+        text(str(game_score), text_font, WHITE, 125, 400)
         text("Enter your player name", text_font, WHITE, 75, 350)
         text("Press ENTER to save", text_font, WHITE, 75, 500)
     
@@ -273,13 +304,13 @@ def add_score():
                     if player_input and len(player_input) > 1:
                         player_input = player_input.lower()
 
-                        add_json = {"player": player_input, "score":party_score}
+                        add_json = {"player": player_input, "score":game_score}
                         data_json["scoring"].append(add_json)
 
                         with open ("score.json", "w") as f:
                             json.dump(data_json,f, indent=1)
 
-                        return "game_over_choice", False
+                        return "game_over_choice"
 
                 elif event.key == K_BACKSPACE:
                     player_input = player_input[:-1]
@@ -291,58 +322,62 @@ def add_score():
 
 
 
-objets = [Objet()]
-game_state = "menu"
-main_loop = True
+def main_loop():
+    game = Game() 
+    run = True
+    game_state = {"state": "menu", "FPS": 0}
 
-while main_loop :
-    if game_state == "menu":
-        menu()
-    elif game_state == "playing":
-        game_state = main_game()
-    elif game_state == "game_over_score":
-        game_state, loop_add_score = add_score()   
-    elif game_state == "game_over_choice":
-        game_over_screen()
-    elif game_state == "scoring_table":
-        scoring_table()
-
-
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            main_loop = False
-        if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
-                    game_state= "menu"
-            if game_state == "menu":
-                if event.key == K_1:
-                    game_state = "playing"
-                elif event.key == K_3:
-                    game_state = "scoring_table"
-                elif event.key == K_2:
-                    game_state = "level" 
-                elif event.key == K_3:
-                    game_state = "score"
-                elif event.key == K_4:
-                    game_state = "game_rules" 
-                elif event.key == K_5:
-                    main_loop = False  
-
-            elif game_state == "game_over_choice":
-                if event.key == K_1:
-                    game_state = "playing" 
-                elif event.key == K_2:
-                    game_state == "menu"  
-
-            elif game_state == "scoring_table":
-                if event.key == K_ESCAPE:
-                    game_state = "menu"
-                elif event.key == K_r:
-                    init_json = {"scoring":[]}
-                    with open ("score.json", "w") as f:
-                        json.dump(init_json,f, indent=1)
+    while run:
+        if game_state["state"] == "menu":
+            menu()
+        elif game_state["state"] == "game_over_score":
+            game_state["state"] = add_score(game_score)
+        elif game_state["state"] == "game_over_choice":
+            game_over_screen()
+        elif game_state["state"] == "playing":
+            game_state["state"], game_score = game.main_game()
+        elif game_state["state"] == "scoring_table":
+            scoring_table()
+        elif game_state["state"] == "level_choice":
+            game_state["FPS"] = level_choice()
+            
 
 
-    pygame.display.update()
-    clock.tick(FPS)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
+            if event.type == pygame.KEYDOWN:
+                if game_state["state"] == "menu":
+                    if event.key == pygame.K_1:
+                        game_state["state"] = "level_choice"
+                        game_state["FPS"] = level_choice()
+                        game.reset_game() 
+                        game_state["state"] = "playing"
+                    elif event.key == pygame.K_3:
+                        game_state["state"] = "scoring_table"
+                    elif event.key == pygame.K_4:
+                        run = False
+
+                if game_state["state"] == "game_over_choice":
+                    if event.key == pygame.K_1:
+                        game.reset_game()  
+                        game_state["state"] = "playing"
+                    if event.key == pygame.K_2:
+                        game_state["state"] = "menu"
+                
+                elif game_state["state"] == "scoring_table":
+                    if event.key == K_ESCAPE:
+                        game_state["state"] = "menu"
+                    elif event.key == K_r:
+                        init_json = {"scoring":[]}
+                        with open ("score.json", "w") as f:
+                            json.dump(init_json,f, indent=1)
+
+
+        pygame.display.update()
+        clock.tick(game_state["FPS"])
+
+main_loop()
 pygame.quit()
