@@ -2,6 +2,7 @@ import os
 import pygame
 from pygame.locals import *
 import random
+import string
 
 pygame.init()
 
@@ -31,7 +32,7 @@ boom = pygame.image.load("pictures/fruits/boom.png")
 
 fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon]
 bonus = [ice, bomb]
-alphabet = ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P", "Q", "S", "D", "F", "G", "H", "J", "K", "L", "M", "W", "X", "C", "V", "B", "N"]
+# alphabet = ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P", "Q", "S", "D", "F", "G", "H", "J", "K", "L", "M", "W", "X", "C", "V", "B", "N"]
 clock = pygame.time.Clock()
 FPS = 20
 GRAVITY  = 2
@@ -56,7 +57,7 @@ class Objet:
         self.vitesse_x = random.randint(-15,15)
         self.vitesse_y = random.randint(-50, -35) 
         self.fruit = random.choice(fruits)
-        self.letter = random.choice(alphabet)
+        self.letter = random.choice(string.ascii_lowercase)
         self.fruit_rect = self.fruit.get_rect()
         self.letter_surface = game_letter_font.render(self.letter, True, YELLOW)
         self.letter_rect = self.letter_surface.get_rect()
@@ -84,7 +85,7 @@ class Objet_bis:
         self.vitesse_x = random.randint(-15,15)
         self.vitesse_y = random.randint(-50, -35) 
         self.fruit = random.choice(bonus)
-        self.letter = random.choice(alphabet)
+        self.letter = random.choice(string.ascii_lowercase)
         self.fruit_rect = self.fruit.get_rect()
         self.letter_surface = game_letter_font.render(self.letter, True, YELLOW)
         self.letter_rect = self.letter_surface.get_rect()
@@ -139,6 +140,7 @@ def main_game():
     objets.clear()
     spawn_new_fruits()
     life = 3
+    score = 0
     run = True
     while run:
         for event in pygame.event.get():
@@ -149,6 +151,7 @@ def main_game():
                     return "menu"
 
         screen.blit(background, (0, 0)) 
+        text((f"Score: {score}"), text_font, (WHITE), 50,50)
        
         for i in range(life):
             screen.blit(lives, (600 + i * 60, 20))
@@ -181,7 +184,12 @@ def main_game():
                         spawn_bonus()
                         spawn_new_fruits()
                         spawn_new_fruits()
-            
+                for event in pygame.event.get():
+                    if event.type == KEYDOWN:
+                        for letter in screen:
+                            if event.key == letter:
+                                score += 1
+                            
 
                 if objets:
                     life -= 1

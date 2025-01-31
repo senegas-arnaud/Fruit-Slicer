@@ -1,27 +1,29 @@
 import pygame
 import random
+import string
+from pygame.locals import *
 
 pygame.init()
 
 screen = pygame.display.set_mode((1250, 750))
-background = pygame.image.load(r"C:/Users/arnau/Documents/La Plateforme/Python/Fruit-Slicer/images/back.png")
+background = pygame.image.load("pictures/background.png").convert()
 text_font = pygame.font.SysFont("Arial", 40)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 ninja = pygame.image.load("pictures/ninja.png").convert_alpha()
-banana = pygame.image.load(r"C:/Users/arnau/Documents/La Plateforme/Python/Fruit-Slicer/images/banana.png")
-orange = pygame.image.load(r"C:/Users/arnau/Documents/La Plateforme/Python/Fruit-Slicer/images/orange.png")
+banana = pygame.image.load("pictures/fruits/banana.png")
+orange = pygame.image.load("pictures/fruits/orange.png")
 apple = pygame.image.load("pictures/fruits/apple.png")
-ice = pygame.image.load(r"C:/Users/arnau/Documents/La Plateforme/Python/Fruit-Slicer/images/ice.png")
-bomb = pygame.image.load(r"C:/Users/arnau/Documents/La Plateforme/Python/Fruit-Slicer/images/bomb.png")
-strawberry = pygame.image.load(r"C:/Users/arnau/Documents/La Plateforme/Python/Fruit-Slicer/images/strawberry.png")
-boom = pygame.image.load(r"C:/Users/arnau/Documents/La Plateforme/Python/Fruit-Slicer/images/boom.png")
-lives = pygame.image.load(r"C:/Users/arnau/Documents/La Plateforme/Python/Fruit-Slicer/images/redcross.png")
+ice = pygame.image.load("pictures/fruits/ice.png")
+bomb = pygame.image.load("pictures/fruits/bomb.png")
+strawberry = pygame.image.load("pictures/fruits/strawberry.png")
+boom = pygame.image.load("pictures/fruits/boom.png")
+lives = pygame.image.load("pictures/fruits/redcross.png")
 
 fruits = [banana, orange, apple, ice, bomb, strawberry]
 clock = pygame.time.Clock()
-FPS = 30
+FPS = 20
 GRAVITY = 2
 
 alphabet = ["a", "z", "e", "r", "t", "y", "u", "i", "o", "p", "q", "s", "d", "f", "g", "h", "j", "k", "l", "m", "w", "x", "c", "v", "b", "n"]
@@ -60,12 +62,19 @@ class Game:
 
     def main_game(self):
         run = True
+        score = 0
         while run:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-
+                if event.type == KEYDOWN:
+                    if event.key == string.ascii_lowercase:
+                        if string.ascii_lowercase == objet.letter:
+                            score += 1
+                            pygame.display.update(score)
+            
             screen.blit(background, (0, 0))
+            text(f"Score: {score}", text_font, (WHITE), 100, 50)
 
             for i in range(self.life):
                 screen.blit(lives, (1050 + i * 60, 20))
@@ -73,7 +82,7 @@ class Game:
             for objet in self.objets[:]:
                 objet.update()
                 objet.display(screen)
-
+            #condition to substract a life if fruit exits screen
             for objet in self.objets[:]:
                 if objet.y > 745 or objet.y < 5 or objet.x < 5 or objet.x > 1245:
                     self.objets.remove(objet)
