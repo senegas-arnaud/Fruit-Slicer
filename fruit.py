@@ -8,6 +8,7 @@ alphabet = ["a", "z", "e", "r", "t", "y", "u", "i", "o", "p", "q", "s", "d", "f"
 GRAVITY = 1
 
 WHITE = (255, 255, 255)
+YELLOW = (255, 255, 0)
 
 title_font = pygame.font.SysFont("Arial", 60, italic = True)
 
@@ -20,6 +21,7 @@ strawberry = pygame.image.load("pictures/fruits/strawberry.png")
 watermelon = pygame.image.load("pictures/fruits/watermelon.png")
 
 fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon]
+
 
 class Fruit:
     def __init__(self):
@@ -37,5 +39,5 @@ class Fruit:
 
     def display(self, screen):
         screen.blit(self.image, (self.x, self.y))
-        text_surface = title_font.render (self.letter, True, WHITE)
+        text_surface = title_font.render (self.letter, True, YELLOW)
         screen.blit (text_surface, (self.x, self.y))
