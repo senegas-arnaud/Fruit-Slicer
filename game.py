@@ -70,6 +70,8 @@ class Game:
                             if objet.image == ice :
                                 self.objets.remove(objet)
                                 time.sleep(4)
+                                if len(self.objets)<=1:
+                                    self.spawn_new_fruit()
                                 continue 
                             else : 
                                 self.objets.remove(objet)
