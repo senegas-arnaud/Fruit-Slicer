@@ -1,46 +1,16 @@
 import pygame
 from pygame.locals import *
 import json
-<<<<<<< HEAD
-import string
-=======
 from game import Game
 
->>>>>>> 26a806a76f7d95ac3437d31a77c79eef1ffdc07f
 
 pygame.init()
 
 pygame.display.set_caption("Fruits Ninja") 
 screen = pygame.display.set_mode((800, 600))
-<<<<<<< HEAD
-pygame.display.set_caption("Fruit Slicer") 
-background = pygame.image.load("pictures/background.png").convert()
-ninja = pygame.image.load("pictures/ninja.png").convert_alpha()
-
-#Load images
-apple = pygame.image.load("pictures/fruits/apple.png")
-banana = pygame.image.load("pictures/fruits/banana.png")
-kiwi = pygame.image.load("pictures/fruits/kiwi.png")
-lime = pygame.image.load("pictures/fruits/lime.png")
-orange = pygame.image.load("pictures/fruits/orange.png")
-strawberry = pygame.image.load("pictures/fruits/strawberry.png")
-watermelon = pygame.image.load("pictures/fruits/watermelon.png")
-ice = pygame.image.load("pictures/fruits/ice.png")
-bomb = pygame.image.load("pictures/fruits/bomb.png")
-lives = pygame.image.load("pictures/fruits/redcross.png")
-boom = pygame.image.load("pictures/fruits/boom.png")
-
-fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon]
-bonus = [ice, bomb]
-# alphabet = ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P", "Q", "S", "D", "F", "G", "H", "J", "K", "L", "M", "W", "X", "C", "V", "B", "N"]
-clock = pygame.time.Clock()
-FPS = 20
-GRAVITY  = 2
-=======
 background = pygame.image.load("pictures/background.png")
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
->>>>>>> 26a806a76f7d95ac3437d31a77c79eef1ffdc07f
 
 #text formatting
 title_font = pygame.font.SysFont("Arial", 60, italic = True)
@@ -51,71 +21,15 @@ game_letter_font = pygame.font.SysFont("Arial", 35, bold = True)
 scoring_table_font = pygame.font.SysFont("Arial", 40, bold = True)
 
 
-<<<<<<< HEAD
-class Objet:
-    def __init__(self):
-        self.x = random.randint(100,600)
-        self.y = 600
-        self.vitesse_x = random.randint(-15,15)
-        self.vitesse_y = random.randint(-50, -35) 
-        self.fruit = random.choice(fruits)
-        self.letter = random.choice(string.ascii_lowercase)
-        self.fruit_rect = self.fruit.get_rect()
-        self.letter_surface = game_letter_font.render(self.letter, True, YELLOW)
-        self.letter_rect = self.letter_surface.get_rect()
-        self.width = max(self.fruit_rect.width, self.letter_rect.width)
-        self.height = self.fruit_rect.height + self.letter_rect.height
-        self.rect = pygame.Rect(self.x, self.y,self.width, self.height)
-    
-    def update(self):
-        self.vitesse_y += GRAVITY 
-        self.x += self.vitesse_x
-        self.y += self.vitesse_y
-        self.rect.x = self.x
-        self.rect.y = self.y
-=======
 ninja = pygame.image.load("pictures/ninja.png")
 banana = pygame.image.load("pictures/fruits/banana.png")
 boom = pygame.image.load("pictures/boom.png")
 lives = pygame.image.load("pictures/redcross.png")
->>>>>>> 26a806a76f7d95ac3437d31a77c79eef1ffdc07f
 
 clock = pygame.time.Clock()
 FPS = 0
 
 
-<<<<<<< HEAD
-class Objet_bis:
-    def __init__(self):
-        self.x = random.randint(100,600)
-        self.y = 600
-        self.vitesse_x = random.randint(-15,15)
-        self.vitesse_y = random.randint(-50, -35) 
-        self.fruit = random.choice(bonus)
-        self.letter = random.choice(string.ascii_lowercase)
-        self.fruit_rect = self.fruit.get_rect()
-        self.letter_surface = game_letter_font.render(self.letter, True, YELLOW)
-        self.letter_rect = self.letter_surface.get_rect()
-        self.width = max(self.fruit_rect.width, self.letter_rect.width)
-        self.height = self.fruit_rect.height + self.letter_rect.height
-        self.rect = pygame.Rect(self.x, self.y,self.width, self.height)
-    
-    def update(self):
-        self.vitesse_y += GRAVITY 
-        self.x += self.vitesse_x
-        self.y += self.vitesse_y
-        self.rect.x = self.x
-        self.rect.y = self.y
-
-    def display(self, screen):
-        screen.blit(self.fruit, (self.rect.x, self.rect.y + self.letter_rect.height))
-        screen.blit(self.letter_surface, (self.rect.x + (self.width - self.letter_rect.width) // 2, self.rect.y))
-        # pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)
-
-
-#Menu function
-=======
->>>>>>> 26a806a76f7d95ac3437d31a77c79eef1ffdc07f
 def menu():
     screen.blit(background,(0,0))
     screen.blit(ninja,(0,200))
@@ -193,86 +107,7 @@ def scoring_table():
 
 
 
-<<<<<<< HEAD
-def main_game():
-
-    objets.clear()
-    spawn_new_fruits()
-    life = 3
-    score = 0
-    run = True
-    while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    return "menu"
-
-        screen.blit(background, (0, 0)) 
-
-        for i in range(life):
-            screen.blit(lives, (600 + i * 60, 20))
-
-        for objet in objets[:]:
-            objet.update()
-            objet.display(screen)
-
-            if objet.y > 600 or objet.y < 0 or objet.x < 0 or objet.x > 850:
-                objets.remove(objet)
-                spawn_count = random.choices([1, 2, 3, 4, 5, 6], weights=[45, 25, 10, 5, 5, 10])[0]
-                match spawn_count:
-                    case 1:
-                        spawn_new_fruits()
-                    case 2:
-                        spawn_new_fruits()
-                        spawn_new_fruits()
-                    case 3:
-                        spawn_new_fruits()
-                        spawn_new_fruits()
-                        spawn_new_fruits()
-                    case 4:
-                        spawn_new_fruits() or spawn_bonus()
-                        spawn_new_fruits()
-                        spawn_new_fruits()
-                        spawn_new_fruits()
-                    case 5:
-                        spawn_bonus()
-                    case 6:
-                        spawn_bonus()
-                        spawn_new_fruits()
-                        spawn_new_fruits()
-                for event in pygame.event.get():
-                    if event.type == KEYDOWN:
-                        for letter in screen:
-                            if event.key == letter:
-                                score += 1
-                            
-
-                if objets:
-                    life -= 1
-                    if life == 0:
-                        return "game_over_score"
-
-        pygame.display.update()
-        clock.tick(FPS)
-
-def game_rules():
-    screen.blit(background,(0,0))
-    text("NINJA SLICER \nGAME RULES", title_font, (WHITE), 300, 60)
-    text("Collect as many points as possible before getting game over.", game_rule_font, (WHITE), 30, 210)
-    text("Type the letter that appears above every fruit entering the screen before \nit disappears.", game_rule_font, (WHITE), 30, 240)
-    text("If you miss the fruit, you lose a life (you start the game with 3 lives)", game_rule_font, (WHITE), 30, 300)
-    text("If you type the letter above an icecube the game will pause for 3 seconds \nthen resume.", game_rule_font, (WHITE), 30, 330)
-    text("You can get extra points by getting a combo of 3 fruits with the same letter.", game_rule_font, (WHITE), 30, 390)
-    text("Be careful though! Make sure you don't type the letter above the bomb, \nor you lose the game immediately!", game_rule_font, (WHITE), 30, 420)
-    text("GOOD LUCK!", second_title_font, (WHITE), 250, 500)
-    text("ESC to return to menu",text_font,(WHITE),200, 560)
-
-def add_score():
-=======
 def add_score(game_score):
->>>>>>> 26a806a76f7d95ac3437d31a77c79eef1ffdc07f
     player_input = ""
     
     with open("score.json", "r") as f:
