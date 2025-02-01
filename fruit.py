@@ -18,8 +18,11 @@ lime = pygame.image.load("pictures/fruits/lime.png")
 orange = pygame.image.load("pictures/fruits/orange.png")
 strawberry = pygame.image.load("pictures/fruits/strawberry.png")
 watermelon = pygame.image.load("pictures/fruits/watermelon.png")
+ice = pygame.image.load("pictures/fruits/ice.png")
+bomb = pygame.image.load("pictures/fruits/bomb.png")
 
-fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon]
+
+fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon, ice, bomb]
 
 class Fruit:
     def __init__(self):
@@ -29,6 +32,13 @@ class Fruit:
         self.vitesse_y = random.randint(-35, -25)
         self.image = random.choice(fruits)
         self.letter = random.choice(alphabet)
+        if self.image == bomb:
+            self.type = "bomb"
+        elif self.image == ice:
+            self.type = "ice"
+        else:
+            self.type = "fruit"
+
 
     def update(self):
         self.vitesse_y += GRAVITY
