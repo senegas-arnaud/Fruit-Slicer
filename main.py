@@ -2,9 +2,12 @@ import pygame
 from pygame.locals import *
 import json
 from game import Game
+from sound import Sound
 
 
 pygame.init()
+
+music = Sound()
 
 pygame.display.set_caption("Fruits Ninja") 
 screen = pygame.display.set_mode((800, 600))

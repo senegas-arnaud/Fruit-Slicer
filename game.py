@@ -3,6 +3,7 @@ import pygame
 import time
 from fruit import Fruit
 from pygame.locals import *
+from sound import Sound
 
 pygame.init()
 
@@ -36,6 +37,7 @@ class Game:
         self.life = 3
         self.objets = [Fruit()]  
         self.game_state = "menu"  
+        self.music = Sound()
 
     def reset_game(self):
         self.score = 0
@@ -53,38 +55,57 @@ class Game:
                 if event.type == pygame.QUIT:
                     run = False
                 if event.type == pygame.KEYDOWN:
-                    
                     if event.key == K_ESCAPE:
                         return "menu", 0
 
-                    for objet in self.objets[:]:
+                    sliced_fruits = {}  
+                    to_remove = []  
+
+                    for objet in self.objets[:]:  
+                        
                         if event.key == getattr(pygame, f"K_{objet.letter}"):
-                        # Pour les combos mais ca marche pas trop    
-                            #if getattr(pygame, f"K_{objet.letter}") > 3:
-                                #self.score += 3
-                            #if getattr(pygame, f"K_{objet.letter}") > 4:
-                                #self.score += 4
-                            if objet.image == bomb:
+
+                            if objet.type == "bomb":
+                                self.music.explosion_sound.play()
                                 game_score = self.score
+                                self.objets.clear()
                                 return "game_over_score", game_score
-                            if objet.image == ice :
-                                self.objets.remove(objet)
+
+                            if objet.type == "ice":
+                                to_remove.append(objet)
                                 time.sleep(4)
-                                if len(self.objets)<=1:
-                                    self.spawn_new_fruit()
+                                if len(self.objets) <= 1:
+                                    self.spawn_new_fruits()
                                 continue 
-                            else : 
-                                self.objets.remove(objet)
-                                self.score +=1
-                                if random.random() < 0.5 and len(self.objets) >= 2:
-                                    continue
-                                else:
-                                    if random.random() < 0.5:
-                                        self.spawn_new_fruits()
-                                    else:
-                                        self.spawn_new_fruits()
-                                        self.spawn_new_fruits()
-                                
+
+                            if objet.letter not in sliced_fruits:
+                                self.music.slice_sound.play()
+                                sliced_fruits[objet.letter] = []
+
+                            sliced_fruits[objet.letter].append(objet)
+
+                    
+                    for letter, fruits in sliced_fruits.items():
+                        count = len(fruits)
+                        if count > 0:
+                            self.score += count  
+                            self.score += max(0, count - 1)  
+
+                        
+                        to_remove.extend(fruits)
+
+                    
+                    for fruit in to_remove:
+                        if fruit in self.objets:  
+                            self.objets.remove(fruit)
+
+                    
+                    if random.random() < 0.5 and len(self.objets) >= 2:
+                        pass
+                    else:
+                        self.spawn_new_fruits()
+                        if random.random() < 0.5:
+                            self.spawn_new_fruits()
 
             screen.blit(background, (0, 0))
             text(f"{self.score}", second_title_font, YELLOW, 50,20 )
@@ -110,6 +131,7 @@ class Game:
                     self.life -= 1
                     if self.life == 0:
                         game_score = self.score
+                        self.objets.clear()
                         return "game_over_score", game_score
                     
             pygame.display.update()
