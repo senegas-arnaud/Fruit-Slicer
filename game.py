@@ -3,6 +3,7 @@ import pygame
 import time
 from fruit import Fruit
 from pygame.locals import *
+from sound import Sound
 
 pygame.init()
 
@@ -36,6 +37,7 @@ class Game:
         self.life = 3
         self.objets = [Fruit()]  
         self.game_state = "menu"  
+        self.music = Sound()
 
     def reset_game(self):
         self.score = 0
@@ -64,6 +66,7 @@ class Game:
                         if event.key == getattr(pygame, f"K_{objet.letter}"):
 
                             if objet.type == "bomb":
+                                self.music.explosion_sound.play()
                                 game_score = self.score
                                 self.objets.clear()
                                 return "game_over_score", game_score
@@ -76,6 +79,7 @@ class Game:
                                 continue 
 
                             if objet.letter not in sliced_fruits:
+                                self.music.slice_sound.play()
                                 sliced_fruits[objet.letter] = []
 
                             sliced_fruits[objet.letter].append(objet)
