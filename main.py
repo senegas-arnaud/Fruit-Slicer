@@ -1,128 +1,140 @@
-import pygame
 import random
-from game import Game
+import pygame
+import time
+from fruit import Fruit
+from pygame.locals import *
+from sound import Sound
 
 pygame.init()
 
-pygame.display.set_caption("Fruits Ninja") 
 screen = pygame.display.set_mode((800, 600))
 background = pygame.image.load("pictures/background.png")
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-YELLOW = (255, 255, 0)
 
-#text formatting
 title_font = pygame.font.SysFont("Arial", 60, italic = True)
 second_title_font = pygame.font.SysFont("Arial", 30, italic = True)
 text_font = pygame.font.SysFont("Arial", 15)
 text_font_bold = pygame.font.SysFont("Arial", 16, bold = True)
 game_letter_font = pygame.font.SysFont("Arial", 35, bold = True)
+scoring_table_font = pygame.font.SysFont("Arial", 40, bold = True)
 
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+YELLOW = (255, 255, 0)
 
-ninja = pygame.image.load("pictures/ninja.png")
-banana = pygame.image.load("pictures/fruits/banana.png")
-orange = pygame.image.load("pictures/fruits/orange.png")
-apple = pygame.image.load("pictures/fruits/apple.png")
 ice = pygame.image.load("pictures/fruits/ice.png")
 bomb = pygame.image.load("pictures/fruits/bomb.png")
-strawberry = pygame.image.load("pictures/fruits/strawberry.png")
-boom = pygame.image.load("pictures/boom.png")
 lives = pygame.image.load("pictures/redcross.png")
-
-fruits = [banana, orange, apple, ice, bomb, strawberry]
 clock = pygame.time.Clock()
-GRAVITY = 1
-
-alphabet = ["a", "z", "e", "r", "t", "y", "u", "i", "o", "p", "q", "s", "d", "f", "g", "h", "j", "k", "l", "m", "w", "x", "c", "v", "b", "n"]
-
-def menu():
-    screen.blit(background,(0,0))
-    screen.blit(ninja,(0,200))
-    text("Welcome to", second_title_font, (WHITE), 425, 50)
-    text("NINJA FRUITS", title_font, (WHITE), 300, 100)
-    text("1. PLAY GAME", text_font_bold, (WHITE), 420, 250)
-    text("2. CHANGE YOUR NAME", text_font_bold, (WHITE), 420, 300)
-    text("3. SCORING TABLE", text_font_bold, (WHITE), 420, 350)
-    text("4. EXIT THE GAME (are you sure ?)", text_font_bold, (WHITE), 420, 400)
-    text("ENTER YOUR CHOICE", text_font, (WHITE), 460, 450)
-
-def game_over_screen():
-    screen.blit(background, (0, 0)) 
-    screen.blit(boom, (250,-10))
-    text("GAME OVER !", title_font, WHITE, 235, 375)
-    text("1. Play again?", second_title_font, WHITE, 75, 300)
-    text("2. Back to menu?", second_title_font, WHITE, 75,500 )
-
+FPS = 0
 
 def text(texte, text_font, couleur, x, y):
     texte_surface = text_font.render(texte, True, couleur)
     screen.blit(texte_surface, (x, y))
-    
 
-def select_level(game):
-    selecting = True
-    while selecting:
-        screen.blit(background,(0,0))
-        screen.blit(ninja,(0,200))
-        text("Choose Difficulty", second_title_font, WHITE, 320, 150)
-        text("1. EASY", text_font_bold, WHITE, 350, 250)
-        text("2. MEDIUM", text_font_bold, WHITE, 350, 300)
-        text("3. HARD", text_font_bold, WHITE, 350, 350)
-        text("Press 1, 2, or 3 to select", text_font, WHITE, 360, 400)
-    
-        pygame.display.update()
+class Game:
+    def __init__(self):
+        self.score = 0
+        self.life = 3
+        self.objets = [Fruit()]  
+        self.game_state = "menu"  
+        self.music = Sound()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_1:
-                    game.fps = 20  # Easy
-                    selecting = False
-                elif event.key == pygame.K_2:
-                    game.fps = 30  # Medium
-                    selecting = False
-                elif event.key == pygame.K_3:
-                    game.fps = 60  # Hard
-                    selecting = False
+    def reset_game(self):
+        self.score = 0
+        self.life = 3
+        self.objets = [Fruit()]
 
-    game.reset_game()
-    game.game_state = "playing"
+    def spawn_new_fruits(self):
+        self.objets.append(Fruit())
 
-def main_loop():
-    game = Game() 
-    run = True
+    def main_game(self):
+        run = True
+        game_state = {"state": "menu", "FPS": 5}
+        while run:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        return "menu", 0
 
-    while run:
-        if game.game_state == "menu":
-            menu()
-        elif game.game_state == "select_level":
-            select_level(game)  
-        elif game.game_state == "game_over":
-            game_over_screen()
-        elif game.game_state == "playing":
-            game.game_state = game.main_game()
+                    sliced_fruits = {}  
+                    to_remove = []  
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.KEYDOWN:
-                if game.game_state == "menu":
-                    if event.key == pygame.K_1:
-                        game.game_state = "select_level"  
-                    elif event.key == pygame.K_4:
-                        run = False
-                elif game.game_state == "game_over":
-                    if event.key == pygame.K_1:
-                        game.reset_game()
-                        game.game_state = "select_level"
-                    elif event.key == pygame.K_2:
-                        game.game_state = "menu"
-                
+                    for objet in self.objets[:]:  
+                        
+                        if event.key == getattr(pygame, f"K_{objet.letter}"):
 
-        pygame.display.update()
-        clock.tick(25)
+                            if objet.type == "bomb":
+                                self.music.explosion_sound.play()
+                                game_score = self.score
+                                self.objets.clear()
+                                return "game_over_score", game_score
 
-main_loop()
-pygame.quit()
+                            if objet.type == "ice":
+                                to_remove.append(objet)
+                                time.sleep(4)
+                                if len(self.objets) <= 1:
+                                    self.spawn_new_fruits()
+                                continue 
+
+                            if objet.letter not in sliced_fruits:
+                                self.music.slice_sound.play()
+                                sliced_fruits[objet.letter] = []
+
+                            sliced_fruits[objet.letter].append(objet)
+
+                    
+                    for letter, fruits in sliced_fruits.items():
+                        count = len(fruits)
+                        if count > 0:
+                            self.score += count  
+                            self.score += max(0, count - 1)  
+
+                        
+                        to_remove.extend(fruits)
+
+                    
+                    for fruit in to_remove:
+                        if fruit in self.objets:  
+                            self.objets.remove(fruit)
+
+                    
+                    if random.random() < 0.5 and len(self.objets) >= 2:
+                        pass
+                    else:
+                        self.spawn_new_fruits()
+                        if random.random() < 0.5:
+                            self.spawn_new_fruits()
+
+            screen.blit(background, (0, 0))
+            text(f"{self.score}", second_title_font, YELLOW, 50,20 )
+
+            for i in range(self.life):
+                screen.blit(lives, (550 + i * 50, 20))
+
+            for objet in self.objets[:]:
+                objet.update()
+                objet.display(screen)
+
+            for objet in self.objets[:]:
+                if objet.y > 595 or objet.y < 5 or objet.x < 5 or objet.x > 795:
+                    if object.image == bomb or object.image == ice:
+                        self.objets.remove(objet)
+                        continue
+
+                    self.objects.remove(object)
+
+                    if len(self.objets) <= 1:
+                        self.spawn_new_fruits()
+                    else:
+                        continue
+
+                    self.life -= 1
+                    if self.life == 0:
+                        game_score = self.score
+                        self.objets.clear()
+                        return "game_over_score", game_score
+                    
+            pygame.display.update()
+            clock.tick(game_state["FPS"])
