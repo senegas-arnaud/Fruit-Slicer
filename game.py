@@ -23,29 +23,29 @@ YELLOW = (255, 255, 0)
 
 ice = pygame.image.load("pictures/fruits/ice.png")
 bomb = pygame.image.load("pictures/fruits/bomb.png")
-lives = pygame.image.load("pictures/redcross.png")
+lives = pygame.image.load("pictures/redheart.png")
 clock = pygame.time.Clock()
 FPS = 0
 
-def text(texte, text_font, couleur, x, y):
-    texte_surface = text_font.render(texte, True, couleur)
-    screen.blit(texte_surface, (x, y))
+def text(text, text_font, couleur, x, y):
+    text_surface = text_font.render(text, True, couleur)
+    screen.blit(text_surface, (x, y))
 
 class Game:
     def __init__(self):
         self.score = 0
         self.life = 3
-        self.objets = [Fruit()]  
+        self.items = [Fruit()]  
         self.game_state = "menu"  
         self.music = Sound()
 
     def reset_game(self):
         self.score = 0
         self.life = 3
-        self.objets = [Fruit()]
+        self.items = [Fruit()]
 
     def spawn_new_fruits(self):
-        self.objets.append(Fruit())
+        self.items.append(Fruit())
 
     def main_game(self):
         run = True
@@ -61,28 +61,28 @@ class Game:
                     sliced_fruits = {}  
                     to_remove = []  
 
-                    for objet in self.objets[:]:  
+                    for item in self.items[:]:  
                         
-                        if event.key == getattr(pygame, f"K_{objet.letter}"):
+                        if event.key == getattr(pygame, f"K_{item.letter}"):
 
-                            if objet.type == "bomb":
+                            if item.type == "bomb":
                                 self.music.explosion_sound.play()
                                 game_score = self.score
-                                self.objets.clear()
+                                self.items.clear()
                                 return "game_over_score", game_score
 
-                            if objet.type == "ice":
-                                to_remove.append(objet)
+                            if item.type == "ice":
+                                to_remove.append(item)
                                 time.sleep(4)
-                                if len(self.objets) <= 1:
+                                if len(self.items) <= 1:
                                     self.spawn_new_fruits()
                                 continue 
 
-                            if objet.letter not in sliced_fruits:
+                            if item.letter not in sliced_fruits:
                                 self.music.slice_sound.play()
-                                sliced_fruits[objet.letter] = []
+                                sliced_fruits[item.letter] = []
 
-                            sliced_fruits[objet.letter].append(objet)
+                            sliced_fruits[item.letter].append(item)
 
                     
                     for letter, fruits in sliced_fruits.items():
@@ -96,11 +96,11 @@ class Game:
 
                     
                     for fruit in to_remove:
-                        if fruit in self.objets:  
-                            self.objets.remove(fruit)
+                        if fruit in self.items:  
+                            self.items.remove(fruit)
 
                     
-                    if random.random() < 0.5 and len(self.objets) >= 2:
+                    if random.random() < 0.5 and len(self.items) >= 2:
                         pass
                     else:
                         self.spawn_new_fruits()
@@ -111,27 +111,27 @@ class Game:
             text(f"{self.score}", second_title_font, YELLOW, 50,20 )
 
             for i in range(self.life):
-                screen.blit(lives, (550 + i * 50, 20))
+                screen.blit(lives, (550 + i * 65, 20))
 
-            for objet in self.objets[:]:
-                objet.update()
-                objet.display(screen)
+            for item in self.items[:]:
+                item.update()
+                item.display(screen)
 
-            for objet in self.objets[:]:
-                if objet.y > 595 or objet.y < 5 or objet.x < 5 or objet.x > 795:
-                    self.objets.remove(objet)
-                    if len(self.objets) <= 1:
+            for item in self.items[:]:
+                if item.y > 595 or item.y < 5 or item.x < 5 or item.x > 795:
+                    self.items.remove(item)
+                    if len(self.items) <= 1:
                         self.spawn_new_fruits()
                     else:
                         continue
 
-                    if objet.type == "bomb" or objet.type == "ice":
+                    if item.type == "bomb" or item.type == "ice":
                         continue 
 
                     self.life -= 1
                     if self.life == 0:
                         game_score = self.score
-                        self.objets.clear()
+                        self.items.clear()
                         return "game_over_score", game_score
                     
             pygame.display.update()

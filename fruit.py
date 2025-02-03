@@ -21,8 +21,7 @@ watermelon = pygame.image.load("pictures/fruits/watermelon.png")
 ice = pygame.image.load("pictures/fruits/ice.png")
 bomb = pygame.image.load("pictures/fruits/bomb.png")
 
-
-fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon, ice, bomb]
+fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon, bomb, ice]
 
 class Fruit:
     def __init__(self):
@@ -38,7 +37,6 @@ class Fruit:
             self.type = "ice"
         else:
             self.type = "fruit"
-
 
     def update(self):
         self.vitesse_y += GRAVITY
