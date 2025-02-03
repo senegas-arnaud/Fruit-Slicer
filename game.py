@@ -77,13 +77,14 @@ class Game:
                                     self.spawn_new_fruits()
                                 continue 
 
+                            # add fruits to sliced_fruits dictionnary per letter
                             if item.letter not in sliced_fruits:
                                 self.music.slice_sound.play()
                                 sliced_fruits[item.letter] = []
 
                             sliced_fruits[item.letter].append(item)
 
-                    
+                    # combo point
                     for letter, fruits in sliced_fruits.items():
                         count = len(fruits)
                         if count > 0:
@@ -93,7 +94,7 @@ class Game:
                         
                         to_remove.extend(fruits)
 
-                    
+                    # del fruits based on to_remove list
                     for fruit in to_remove:
                         if fruit in self.items:  
                             self.items.remove(fruit)
