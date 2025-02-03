@@ -5,6 +5,8 @@ from pygame.locals import *
 pygame.init()
 
 alphabet = ["a", "z", "e", "r", "t", "y", "u", "i", "o", "p", "q", "s", "d", "f", "g", "h", "j", "k", "l", "m", "w", "x", "c", "v", "b", "n"]
+# alphabet = ["a", "z", "e", "r"]
+
 GRAVITY = 1
 
 WHITE = (255, 255, 255)
@@ -21,8 +23,7 @@ watermelon = pygame.image.load("pictures/fruits/watermelon.png")
 ice = pygame.image.load("pictures/fruits/ice.png")
 bomb = pygame.image.load("pictures/fruits/bomb.png")
 
-
-fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon, ice, bomb]
+fruits = [apple, banana, kiwi, lime, orange, strawberry, watermelon, bomb, ice]
 
 class Fruit:
     def __init__(self):
@@ -38,7 +39,6 @@ class Fruit:
             self.type = "ice"
         else:
             self.type = "fruit"
-
 
     def update(self):
         self.vitesse_y += GRAVITY

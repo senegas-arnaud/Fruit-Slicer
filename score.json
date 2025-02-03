@@ -1,24 +1,28 @@
 {
  "scoring": [
   {
-   "player": "jaja",
+   "player": "elo",
    "score": 17
   },
   {
-   "player": "op",
-   "score": 5
+   "player": "tata",
+   "score": 20
   },
   {
-   "player": "az",
-   "score": 0
+   "player": "ko",
+   "score": 8
   },
   {
-   "player": "keke",
-   "score": 1
+   "player": "lo",
+   "score": 7
   },
   {
-   "player": "az",
-   "score": 4
+   "player": "luca",
+   "score": 49
+  },
+  {
+   "player": "mama",
+   "score": 7
   }
  ]
 }
