@@ -125,7 +125,7 @@ class Game:
                     else:
                         continue
 
-                    if objet.image == bomb or objet.image == ice:
+                    if objet.type == "bomb" or objet.type == "ice":
                         continue 
 
                     self.life -= 1
