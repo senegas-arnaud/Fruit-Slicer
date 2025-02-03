@@ -47,9 +47,8 @@ class Game:
     def spawn_new_fruits(self):
         self.items.append(Fruit())
 
-    def main_game(self):
+    def main_game(self,game_state):
         run = True
-        game_state = {"state": "menu", "FPS": 5}
         while run:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -104,7 +103,7 @@ class Game:
                         pass
                     else:
                         self.spawn_new_fruits()
-                        if random.random() < 0.5:
+                        if random.random() < 0.3:
                             self.spawn_new_fruits()
 
             screen.blit(background, (0, 0))

@@ -52,7 +52,7 @@ def main_loop():
         elif game_state["state"] == "game_over_choice":
             game_over_screen()
         elif game_state["state"] == "playing":
-            game_state["state"], game_score = game.main_game()
+            game_state["state"], game_score = game.main_game(game_state)
         elif game_state["state"] == "scoring_table":
             scoring_table()
         elif game_state["state"] == "level_choice":
